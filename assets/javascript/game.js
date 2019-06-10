@@ -5,7 +5,6 @@
 
 $(document).ready(function() {
     var playerCharacterDiv = $("#available-characters");
-    var playerHeroDiv = $(".playerhero");
     var enemiesAvailableDiv = $("#enemies-available");
     var attackButton = $("#attack");
     var currentDefenderDiv = $("#current-defender");
@@ -21,8 +20,8 @@ $(document).ready(function() {
             "finalAttackPower": 0
         },
         {
-            "name": "Spider-Man",
-            "imgSrc": "assets/images/spider-man.png",
+            "name": "Thor",
+            "imgSrc": "assets/images/thor.png",
             "id": "2",
             "healthPoints": 100,
             "attackPower": 20,
@@ -31,7 +30,7 @@ $(document).ready(function() {
         },
         {
             "name": "Captain-America",
-            "imgSrc": "assets/images/captain-marvel.png",
+            "imgSrc": "assets/images/captain-america.png",
             "id": "3",
             "healthPoints": 150,
             "attackPower": 28,
@@ -40,7 +39,7 @@ $(document).ready(function() {
         },
         {
             "name": "Doctor-Strange",
-            "imgSrc": "assets/images/spider-man.png",
+            "imgSrc": "assets/images/doctor-strange.png",
             "id": "4",
             "healthPoints": 90,
             "attackPower": 18,
@@ -48,18 +47,18 @@ $(document).ready(function() {
             "finalAttackPower": 0
         },
         {
-            "name": "Captain-America",
-            "imgSrc": "assets/images/captain-marvel.png",
-            "id": "3",
+            "name": "Iron-Man",
+            "imgSrc": "assets/images/iron-man.png",
+            "id": "4",
             "healthPoints": 150,
             "attackPower": 28,
             "counterAttackPower": 28,
             "finalAttackPower": 0
         },
         {
-            "name": "Doctor-Strange",
-            "imgSrc": "assets/images/spider-man.png",
-            "id": "4",
+            "name": "Thanos",
+            "imgSrc": "assets/images/thanos.png",
+            "id": "5",
             "healthPoints": 90,
             "attackPower": 18,
             "counterAttackPower": 18,
@@ -69,6 +68,13 @@ $(document).ready(function() {
     var availableHeroes = [...superheroes];
     var enemyCharacter = {};
     var playerCharacter = {};
+    var height290Div1 = $("<div>");
+    height290Div1.addClass("height-290");
+    var height290Div2 = $("<div>");
+    height290Div2.addClass("height-290");
+
+    enemiesAvailableDiv.append(height290Div1);
+    currentDefenderDiv.append(height290Div2);
 
     function showCharacter(characters, classesToAdd, divToPrepend) {
         for(var i = characters.length-1 ; i >= 0; i--) {
@@ -78,9 +84,11 @@ $(document).ready(function() {
             var createHealthP = $("<p>");
     
             createNameP.text(characters[i].name);
+            createNameP.addClass("p-padding");
             createImg.attr("src", characters[i].imgSrc);
             createImg.addClass("character-img");
             createHealthP.attr("id","health");
+            createHealthP.addClass("p-padding");
             createHealthP.text(characters[i].healthPoints);
     
             createDiv.append(createNameP);
@@ -89,7 +97,7 @@ $(document).ready(function() {
             createDiv.addClass(classesToAdd);
             createDiv.attr("data-id", characters[i].id);
     
-            divToPrepend.prepend(createDiv);
+            divToPrepend.append(createDiv);
         }
     }
 
@@ -101,9 +109,11 @@ $(document).ready(function() {
             var createHealthP = $("<p>");
     
             createNameP.text(characters.name);
+            createNameP.addClass("p-padding");
             createImg.attr("src", characters.imgSrc);
             createImg.addClass("character-img");
             createHealthP.attr("id","health");
+            createHealthP.addClass("p-padding");
             createHealthP.text(characters.healthPoints);
     
             createDiv.append(createNameP);
@@ -113,7 +123,7 @@ $(document).ready(function() {
             createDiv.attr("data-id", characters.id);
             createDiv.attr("id", "enemy-hero");
     
-            divToPrepend.prepend(createDiv);
+            divToPrepend.append(createDiv);
     }
 
     showCharacter(availableHeroes, "character-div playerHeroes", playerCharacterDiv)
@@ -127,15 +137,13 @@ $(document).ready(function() {
             $(this).removeClass("playerHeroes");
         }
         $(".playerHeroes").remove();
-
+        height290Div1.remove();
         showCharacter(availableHeroes, "character-div enemyHeroes", enemiesAvailableDiv);
 
         $(".enemyHeroes").on("click",function(e) {
             if(checkEnemyHealth === 1) {
                 checkEnemyHealth = 0;
                 enemyCharacter = availableHeroes.filter(x => x.id === $(this).attr("data-id"))[0];
-            
-            
                 availableHeroes.splice(availableHeroes.indexOf(enemyCharacter),1);
     
                 if($(this).attr("data-id") === enemyCharacter.id) {
@@ -145,7 +153,9 @@ $(document).ready(function() {
                 enemy(enemyCharacter, "character-div", currentDefenderDiv);
                 $(".enemyHero").remove();
             }
-            
+           if(availableHeroes.length === 0) {
+               enemiesAvailableDiv.append(height290Div);
+           } 
         });
 
         
@@ -157,14 +167,23 @@ $(document).ready(function() {
 
 
     attackButton.click(function(e) {
-        e.preventDefault();
-        
+        $("#enemy-hero").addClass("attack-background");
+        setTimeout(() => {
+            $("#enemy-hero").removeClass("attack-background");
+        },300);
         enemyCharacter.healthPoints -= playerCharacter.attackPower;
         if(enemyCharacter.healthPoints <= 0) {
             $("#enemy-hero").children("#health").text("0");
             $("#enemy-hero").remove();
             checkEnemyHealth = 1;
         } else {
+            
+        setTimeout(() => {
+            $("#player-hero").addClass("attack-background");
+        },300);
+        setTimeout(() => {
+            $("#player-hero").removeClass("attack-background");
+        },600);
             $("#enemy-hero").children("#health").text(enemyCharacter.healthPoints);
         }
         setTimeout(function() {  
@@ -177,10 +196,7 @@ $(document).ready(function() {
                     $("#player-hero").children("#health").text(playerCharacter.healthPoints);
                 }
             }   
-        },500);
-
-        
-        
+        },500); 
     });
 
 
