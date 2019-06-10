@@ -137,6 +137,28 @@ body {
     box-shadow: 0 0 5px 2px rgba(129, 32, 32, 0.7);
 }
 
+.reset-btnIdle {
+    font-family: 'Rubik', sans-serif;
+    color: rgb(122, 8, 8);
+    background-color: #dda36d;
+    font-size: 1.5rem;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 0 5px 2px rgba(129, 32, 32, 0.7);
+}
+.reset-btnIdle:focus {
+    outline: none;
+    border: none;
+}
+
+.reset-btn:focus {
+    outline: none;
+    border: none;
+    animation-name: btn;
+    animation-duration: .3s;
+}
+
 .btn {
     width: 150px;
     font-family: 'Rubik', sans-serif;

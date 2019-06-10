@@ -1,8 +1,5 @@
 
 
-
-        // * Each character in the game has 3 attributes: `Health Points`, `Attack Power` and `Counter Attack Power`.
-
 $(document).ready(function() {
     var yourCharacterh2 = $("#your-character");
     var defenderh2 = $("#defender");
@@ -25,7 +22,7 @@ $(document).ready(function() {
             "finalAttackPower": function() {
                 var random = Math.random() * 10;
                 if(random < 2) {
-                    return this.attackPower * 3;
+                    return this.attackPower * 4;
                 } else {
                     return this.attackPower;
                 }  
@@ -55,7 +52,7 @@ $(document).ready(function() {
             "finalAttackPower": function() {
                 var random = Math.random() * 10;
                 if(random < 2) {
-                    return this.attackPower * 3;
+                    return this.attackPower * 2;
                 } else {
                     return this.attackPower;
                 }  
@@ -70,10 +67,16 @@ $(document).ready(function() {
             "finalAttackPower": function() {
                 var random = Math.random() * 10;
                 if(random < 2) {
-                    return this.attackPower * 3;
+                    return this.attackPower * 2;
                 } else {
                     return this.attackPower;
                 }  
+            },
+            "freeze": function() {
+                var random = Math.random() * 10;
+                if(random < 5) {
+                    return "freeze";
+                }
             }
         },
         {
@@ -82,12 +85,13 @@ $(document).ready(function() {
             "id": "5",
             "healthPoints": 190,
             "attackPower": 28,
-            "increasePower": false,
+            "increasePower": 0,
             "finalAttackPower": function() {
-                if(this.increasePower) {
+                if(this.increasePower === 1) {
                     this.attackPower += 6;
                     return this.attackPower;
                 } else {
+                    this.increasePower = 1;
                     return this.attackPower;
                 }
                 
@@ -113,7 +117,7 @@ $(document).ready(function() {
             }
         }
     ];
-    var availableHeroes = [...superheroes];
+    var availableHeroes = Array.from(superheroes);
     var randomNumArr = [];
     var enemyHeroes = [];
     var enemyCharacter = {};
@@ -234,40 +238,6 @@ $(document).ready(function() {
     };
 
     $(".availableHeroes").on("click",chooseHero);
-    // $(".availableHeroes").on("click",function(e) {
-    //     // if(playerChose = 1) {
-    //     //     playerCharacter = availableHeroes.filter(x => x.id === $(this).attr("data-id"))[0];
-    //     //     availableHeroes.splice(availableHeroes.indexOf(playerCharacter),1);
-    //     //     character(playerCharacter, "character-div", playerCharacterDiv, "player-hero");
-    //     //     playerChose = 0;
-    //     //     height290Div1.remove();
-    //     //     chooseCharactersh2.text("Choose Defender");
-    //     //     $(".availableHeroes").remove();
-    //     //     for(var i = 0; randomNumArr.length < 3; i++) {
-    //     //         var random = Math.floor(Math.random() * availableHeroes.length);
-    //     //         if(!randomNumArr.includes(random)) {
-    //     //             randomNumArr.push(random);
-    //     //         }
-                
-    //     //     }
-    //     //     enemyHeroes = availableHeroes.filter(x => randomNumArr.includes(availableHeroes.indexOf(x)));
-    //     //     showCharacter(enemyHeroes, "character-div enemy-heroes", availableCharacterDiv);
-    //     // }
-        
-    //     // $(".enemy-heroes").click(function(e) {
-            
-    //     //     if(checkEnemyHealth === 1) {
-    //     //         checkEnemyHealth = 0;
-    //     //         enemyCharacter = enemyHeroes.filter(x => x.id === $(this).attr("data-id"))[0];
-    //     //         enemyHeroes.splice(enemyHeroes.indexOf(enemyCharacter),1);
-    //     //         character(enemyCharacter, "character-div", currentDefenderDiv, "enemy-hero");
-    //     //     $(".enemy-heroes").remove();
-    //     //     showCharacter(enemyHeroes, "character-div enemy-heroes", availableCharacterDiv);   
-    //     //     }
-            
-    //     // });
-        
-    // });
 
     attackButton.click(function(e) {
         $(this).blur();
@@ -310,6 +280,12 @@ $(document).ready(function() {
                     setTimeout(() => {
                         defenderh2.text(`Counterattack with ${enemyAttack} pts.`);
                         $("#player-hero").addClass("attack-background");
+                        if(playerCharacter.healthPoints < 0) {
+                            $("#player-hero").children("#health").text("0");
+                            lost(playerCharacter);
+                        } else {
+                            $("#player-hero").children("#health").text(playerCharacter.healthPoints);
+                        }
                     },500);
 
                     setTimeout(() => {
@@ -325,12 +301,7 @@ $(document).ready(function() {
                         $("#attack").addClass("btn");
                     },2000);
 
-                    if(playerCharacter.healthPoints < 0) {
-                        $("#player-hero").children("#health").text("0");
-                        lost(playerCharacter);
-                    } else {
-                        $("#player-hero").children("#health").text(playerCharacter.healthPoints);
-                    }
+                    
                 }   
             },500); 
 
@@ -346,45 +317,149 @@ $(document).ready(function() {
                 }
                 
             });
-            if (playerCharacter.hasOwnProperty("increasePower")) {
-                playerCharacter.increasePower = true;
-            } else if(enemyCharacter.hasOwnProperty("increasePower")) {
-                enemyCharacter.increasePower = true;
-            }
+             
         }
     });
 
     $("#reset").click((e) => {
-        e.preventDefault();
-        result = 0;
-        availableHeroes = [...superheroes];
+        $(this).blur();
+        
+        setTimeout(() => {
+            $("#reset").removeClass("reset-btn");
+            $("#reset").addClass("reset-btnIdle");
+        }, 300);
+        $("#reset").addClass("reset-btn");
+        
+        $("#player-hero").remove();
+        $("#enemy-hero").remove();
+        $("#attack").addClass("btn");
+        $(".enemy-heroes").remove();
+        $(".result-win").remove();
+        // availableHeroes = Array.from(superheroes);
+        availableHeroes = [
+            {
+                "name": "Captain-Marvel",
+                "imgSrc": "assets/images/captain-marvel.png",
+                "id": "1",
+                "healthPoints": 210,
+                "attackPower": 25,
+                "finalAttackPower": function() {
+                    var random = Math.random() * 10;
+                    if(random < 3) {
+                        return this.attackPower * 4;
+                    } else {
+                        return this.attackPower;
+                    }  
+                }
+            },
+            {
+                "name": "Thor",
+                "imgSrc": "assets/images/thor.png",
+                "id": "2",
+                "healthPoints": 250,
+                "attackPower": 28,
+                "finalAttackPower": function() {
+                    var random = Math.random() * 10;
+                    if(random < 2.5) {
+                        return this.attackPower * 2;
+                    } else {
+                        return this.attackPower;
+                    }  
+                }
+            },
+            {
+                "name": "Captain-America",
+                "imgSrc": "assets/images/captain-america.png",
+                "id": "3",
+                "healthPoints": 190,
+                "attackPower": 28,
+                "finalAttackPower": function() {
+                    var random = Math.random() * 10;
+                    if(random < 2) {
+                        return this.attackPower * 2;
+                    } else {
+                        return this.attackPower;
+                    }  
+                }
+            },
+            {
+                "name": "Doctor-Strange",
+                "imgSrc": "assets/images/doctor-strange.png",
+                "id": "4",
+                "healthPoints": 150,
+                "attackPower": 18,
+                "finalAttackPower": function() {
+                    var random = Math.random() * 10;
+                    if(random < 2) {
+                        return this.attackPower * 2;
+                    } else {
+                        return this.attackPower;
+                    }  
+                },
+                "freeze": function() {
+                    var random = Math.random() * 10;
+                    if(random < 5) {
+                        return "freeze";
+                    }
+                }
+            },
+            {
+                "name": "Iron-Man",
+                "imgSrc": "assets/images/iron-man.png",
+                "id": "5",
+                "healthPoints": 190,
+                "attackPower": 28,
+                "increasePower": 0,
+                "finalAttackPower": function() {
+                    if(this.increasePower === 1) {
+                        this.attackPower += 6;
+                        return this.attackPower;
+                    } else {
+                        this.increasePower = 1;
+                        return this.attackPower;
+                    }
+                    
+                    
+                    
+                }
+            },
+            {
+                "name": "Thanos",
+                "imgSrc": "assets/images/thanos.png",
+                "id": "6",
+                "healthPoints": 220,
+                "attackPower": 20,
+                "finalAttackPower": function() {
+                    var random = Math.random() * 10;
+                    if(random < 2) {
+                        this.attackPower = 300;
+                        return this.attackPower;
+                    } else {
+                        this.attackPower = 30
+                        return this.attackPower;
+                    }  
+                }
+            }
+        ];
         randomNumArr = [];
         enemyHeroes = [];
         enemyCharacter = {};
         playerCharacter = {};
-        $("#player-hero").remove();
+        checkEnemyHealth = 1;
+        attackCheck = 1;
+        result = 0;
+        enemyHeroPick = 0;
+        
         playerCharacterDiv.append(height290Div1);
-        $("#enemy-hero").remove();
-        $("#attack").addClass("btn");
-        $(".enemy-heroes").remove();
+        
         showCharacter(availableHeroes, "character-div availableHeroes", availableCharacterDiv);
         $(".availableHeroes").on("click",chooseHero);
         chooseCharactersh2.text("Choose Your Character");
+        console.log(availableHeroes);
     });
 
     
-    // * Each time the player attacks, their character's Attack Power increases by its base Attack Power. 
-    //   * For example, if the base Attack Power is 6, each attack will increase the Attack Power by 6 (12, 18, 24, 30 and so on).
-    // * The enemy character only has `Counter Attack Power`. 
-
-    //   * Unlike the player's `Attack Points`, `Counter Attack Power` never changes.
-
-    // * The `Health Points`, `Attack Power` and `Counter Attack Power` of each character must differ.
-
-    // * No characters in the game can heal or recover Health Points. 
-
-    //   * A winning player must pick their characters wisely by first fighting an enemy with low `Counter Attack Power`. This will allow them to grind `Attack Power` and to take on enemies before they lose all of their `Health Points`. Healing options would mess with this dynamic.
-
-    // * Your players should be able to win and lose the game no matter what character they choose. The challenge should come from picking the right enemies, not choosing the strongest player.
 });
+
+//resetbutton, clickevent, dublicate array.
 
