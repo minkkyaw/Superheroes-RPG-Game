@@ -1,22 +1,56 @@
 body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: 'Rubik', sans-serif;
-    color: #e2934a;
+    color: #ac621d;
     background-image: url('https://wallpaperaccess.com/full/4704.jpg');
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .header {
+    width: 100%;
+    color: #5a320d;
     font-size: 2rem;
-    text-align: right;
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(223, 217, 217, 0.8);
+    position: relative;
 }
 
 .container {
-    margin: 100px;
+    width: 1000px;
+    margin: 0 auto;
 }
+
+.display-flex {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.width-20 {
+    width: 20%;
+    align-self: center;
+}
+
+.width-40 {
+    width: 40%;
+    justify-self: center;
+}
+
+.available-character-wrapper {
+    width: 720px;
+    height: 580px;
+    margin: 50px auto;
+}
+
 .height-290 {
     height: 290px;
 }
+
 .character-div {
     height: 230px;
     width: 180px;
@@ -27,7 +61,7 @@ body {
     display: inline-block;
     background-color: rgba(150, 144, 144, 0.3);
     margin: 10px;
-    overflow: hidden;
+
 }
 
 .character-img {
@@ -35,17 +69,43 @@ body {
     display: block;
     height: 150px;
     width: 110px;
+    
 }
 
 .label {
     color: #e2934a;
-    font-size: 20px;
+    font-size: 1.5rem;
+    text-align: center;
     background-color: rgba(196, 28, 28, 0.7);
     box-shadow: 0 0 5px 3px rgba(186, 185, 189, 0.7);
     padding: 10px;
-    margin: 20px 0;
+    margin: 20px auto;
     border-radius: 10px;
-    width: 280px;
+    width: 320px;
+}
+
+.result-win {
+    color: #e90000;
+    font-size: 3rem;
+    text-align: center;
+    background-color: rgba(252, 249, 249, 0.9);
+    box-shadow: 0 0 5px 3px rgba(186, 185, 189, 0.7);
+    padding: 10px;
+    margin: 20px auto;
+    border-radius: 10px;
+    width: 320px;
+}
+
+.result-lost {
+    color: #5c0909;
+    font-size: 3rem;
+    text-align: center;
+    background-color: rgba(94, 90, 90, 0.9);
+    box-shadow: 0 0 5px 3px rgba(186, 185, 189, 0.7);
+    padding: 10px;
+    margin: 20px auto;
+    border-radius: 10px;
+    width: 320px;
 }
 
 .p-padding {
@@ -65,3 +125,75 @@ body {
         background-color: rgba(196, 28, 28, 0.7);
     }
 }
+
+.reset-btn {
+    font-family: 'Rubik', sans-serif;
+    color: rgb(122, 8, 8);
+    background-color: #dda36d;
+    font-size: 1.5rem;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 0 5px 2px rgba(129, 32, 32, 0.7);
+}
+
+.btn {
+    width: 150px;
+    font-family: 'Rubik', sans-serif;
+    color: rgb(122, 8, 8);
+    background-color: #dda36d;
+    font-size: 1.5rem;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 0 5px 2px rgba(129, 32, 32, 0.7);
+}
+
+.btnIdle {
+    width: 150px;
+    font-family: 'Rubik', sans-serif;
+    color: rgb(122, 8, 8);
+    background-color: #dda36d;
+    font-size: 1.5rem;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 0 5px 2px rgba(129, 32, 32, 0.7);
+}
+
+.btnIdle:focus {
+    outline: none;
+    border: none;
+}
+
+.btn:hover {
+    background-color: red;
+}
+
+.btn:focus {
+    outline: none;
+    border: none;
+    animation-name: btn;
+    animation-duration: .3s;
+}
+
+@keyframes btn {
+    50% {
+        transform: scale(1.5);
+    }
+}
+
+.position-btn {
+    position: absolute;
+    top: 11px;
+    right: 50px;
+}
+
+.footer {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    background-color: #053275;
+    border-top: 3px solid #f4f4f4;
+}
+

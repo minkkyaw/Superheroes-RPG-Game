@@ -15,28 +15,38 @@
 <body>
     <header class="header">
         <h1>Superheroes RPG Game!</h1>
+        <button id="reset" class="reset-btn position-btn">Reset the game</button>
     </header>
     <div class="container">
         
-        <div id="available-characters">
-            <h2 class="label">Choose your Character</h2>
+        <div class="display-flex">
+            <div id="player-character" class="width-40">
+                <h2 id="your-character" class="label"></h2>
+            </div>
+
+            <div id="fight-section" class="width-20">
+                <button id="attack" class="btn"></button>
+            </div>
+
+            <div id="current-defender" class="width-40">
+                <h2 id="defender" class="label"></h2>
+            </div>
         </div>
-        <div id="enemies-available">
-            <h2 class="label">Enemies Available To Attack</h2> 
-        </div>
-        <div id="fight-section">
-            <h2 class="label">Fight Section</h2>
-            <button id="attack">Attack</button>
-        </div>
-        <div id="current-defender">
-            <h2 class="label">Defender</h2>
-        </div>
-        <div id="fight-section">
-            <h2 class="label">Reset Section</h2>
-            <button id="reset">Reset</button>
+        
+        <hr>
+
+        <div>
+            <h2 id="choose-characters" class="label"></h2> 
+            <div class="available-character-wrapper">
+                <div id="available-characters"></div>
+            </div>
         </div>
         
     </div>
+    <footer class="footer">
+        <p>Min Kyaw</p>
+        <p>&copy;copyright</p>
+    </footer>
     <script src="assets/javascript/game.js">
     </script>
 </body>
