@@ -2,9 +2,6 @@
 
 
         // * Each character in the game has 3 attributes: `Health Points`, `Attack Power` and `Counter Attack Power`.
-    
-
-
 
 $(document).ready(function() {
     var playerCharacterDiv = $("#available-characters");
@@ -12,7 +9,7 @@ $(document).ready(function() {
     var enemiesAvailableDiv = $("#enemies-available");
     var attackButton = $("#attack");
     var currentDefenderDiv = $("#current-defender");
-    var count = 3;
+    var checkEnemyHealth = 1;
     var superheroes = [
         {
             "name": "Captain-Marvel",
@@ -30,6 +27,24 @@ $(document).ready(function() {
             "healthPoints": 100,
             "attackPower": 20,
             "counterAttackPower": 20,
+            "finalAttackPower": 0
+        },
+        {
+            "name": "Captain-America",
+            "imgSrc": "assets/images/captain-marvel.png",
+            "id": "3",
+            "healthPoints": 150,
+            "attackPower": 28,
+            "counterAttackPower": 28,
+            "finalAttackPower": 0
+        },
+        {
+            "name": "Doctor-Strange",
+            "imgSrc": "assets/images/spider-man.png",
+            "id": "4",
+            "healthPoints": 90,
+            "attackPower": 18,
+            "counterAttackPower": 18,
             "finalAttackPower": 0
         },
         {
@@ -116,18 +131,21 @@ $(document).ready(function() {
         showCharacter(availableHeroes, "character-div enemyHeroes", enemiesAvailableDiv);
 
         $(".enemyHeroes").on("click",function(e) {
+            if(checkEnemyHealth === 1) {
+                checkEnemyHealth = 0;
+                enemyCharacter = availableHeroes.filter(x => x.id === $(this).attr("data-id"))[0];
             
-            enemyCharacter = availableHeroes.filter(x => x.id === $(this).attr("data-id"))[0];
             
-            
-            availableHeroes.splice(availableHeroes.indexOf(enemyCharacter),1);
-
-            if($(this).attr("data-id") === enemyCharacter.id) {
-                $(this).addClass("enemyHero");
+                availableHeroes.splice(availableHeroes.indexOf(enemyCharacter),1);
+    
+                if($(this).attr("data-id") === enemyCharacter.id) {
+                    $(this).addClass("enemyHero");
+                }
+                console.log(enemyCharacter);
+                enemy(enemyCharacter, "character-div", currentDefenderDiv);
+                $(".enemyHero").remove();
             }
-            console.log(enemyCharacter);
-            enemy(enemyCharacter, "character-div", currentDefenderDiv);
-            $(".enemyHero").remove();
+            
         });
 
         
@@ -144,7 +162,8 @@ $(document).ready(function() {
         enemyCharacter.healthPoints -= playerCharacter.attackPower;
         if(enemyCharacter.healthPoints <= 0) {
             $("#enemy-hero").children("#health").text("0");
-            console.log("you win");
+            $("#enemy-hero").remove();
+            checkEnemyHealth = 1;
         } else {
             $("#enemy-hero").children("#health").text(enemyCharacter.healthPoints);
         }
@@ -159,7 +178,7 @@ $(document).ready(function() {
                 }
             }   
         },500);
-        
+
         
         
     });
