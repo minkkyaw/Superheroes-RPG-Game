@@ -179,10 +179,6 @@ $(document).ready(function() {
     
             divToPrepend.append(createDiv);
     }
-
-    function chooseEnemy() {
-
-    }
     
     function win(character, heroes) {
         if(character.healthPoints <= 0 && heroes.length === 0){
@@ -306,7 +302,6 @@ $(document).ready(function() {
             },500); 
 
             $(".enemy-heroes").click(function(e) {
-                
                 if(checkEnemyHealth === 1) {
                     checkEnemyHealth = 0;
                     enemyCharacter = enemyHeroes.filter(x => x.id === $(this).attr("data-id"))[0];
@@ -315,7 +310,6 @@ $(document).ready(function() {
                 $(".enemy-heroes").remove();
                 showCharacter(enemyHeroes, "character-div enemy-heroes", availableCharacterDiv);   
                 }
-                
             });
              
         }
@@ -461,5 +455,5 @@ $(document).ready(function() {
     
 });
 
-//resetbutton, clickevent, dublicate array.
+//clickevent, dublicate array.
 
