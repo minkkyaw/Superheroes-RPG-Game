@@ -40,6 +40,12 @@ body {
     justify-self: center;
 }
 
+hr {
+    border:none;
+    border-top: 2px solid rgba(215, 206, 241, 0.7);
+    box-shadow: 0 0 5px 3px rgba(215, 206, 241, 0.7);
+}
+
 .available-character-wrapper {
     width: 720px;
     height: 580px;
@@ -60,6 +66,29 @@ body {
     display: inline-block;
     background-color: rgba(150, 144, 144, 0.3);
     margin: 10px;
+    position: relative;
+}
+
+.details-div {
+    text-align: left;
+    font-size: 14px;
+    color: rgb(12, 5, 53);
+    width: 220px;
+    line-height: 1.5;
+    border-radius: 10px;
+    padding: 10px;
+    display: inline-block;
+    background-color: rgba(226, 147, 74, 0.9);;
+    margin: 10px;
+    z-index: 99;
+    position:absolute;
+    right: -260px;
+    top: 0;
+}
+
+.width-95 {
+    display: inline-block;
+    width: 95px;
 }
 
 .character-img {
@@ -215,4 +244,5 @@ body {
     background-color: #053275;
     border-top: 3px solid #f4f4f4;
 }
+
 

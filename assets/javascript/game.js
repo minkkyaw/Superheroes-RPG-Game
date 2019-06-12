@@ -17,12 +17,13 @@ $(document).ready(function() {
             "name": "Captain-Marvel",
             "imgSrc": "assets/images/captain-marvel.png",
             "id": "1",
-            "healthPoints": 210,
-            "attackPower": 25,
+            "healthPoints": 430,
+            "attackPower": 35,
+            "skill": "40% 5x Critical",
             "finalAttackPower": function() {
                 var random = Math.random() * 10;
-                if(random < 2) {
-                    return this.attackPower * 4;
+                if(random < 4) {
+                    return this.attackPower * 5;
                 } else {
                     return this.attackPower;
                 }  
@@ -32,11 +33,12 @@ $(document).ready(function() {
             "name": "Thor",
             "imgSrc": "assets/images/thor.png",
             "id": "2",
-            "healthPoints": 200,
-            "attackPower": 28,
+            "healthPoints": 440,
+            "attackPower": 38,
+            "skill": "30% 2x Critical",
             "finalAttackPower": function() {
                 var random = Math.random() * 10;
-                if(random < 2.5) {
+                if(random < 3) {
                     return this.attackPower * 2;
                 } else {
                     return this.attackPower;
@@ -47,8 +49,9 @@ $(document).ready(function() {
             "name": "Captain-America",
             "imgSrc": "assets/images/captain-america.png",
             "id": "3",
-            "healthPoints": 190,
-            "attackPower": 28,
+            "healthPoints": 425,
+            "attackPower": 40,
+            "skill": "20% 2x Critical",
             "finalAttackPower": function() {
                 var random = Math.random() * 10;
                 if(random < 2) {
@@ -62,33 +65,29 @@ $(document).ready(function() {
             "name": "Doctor-Strange",
             "imgSrc": "assets/images/doctor-strange.png",
             "id": "4",
-            "healthPoints": 150,
+            "healthPoints": 380,
             "attackPower": 18,
+            "skill": "30% 3x Critical",
             "finalAttackPower": function() {
                 var random = Math.random() * 10;
-                if(random < 2) {
-                    return this.attackPower * 2;
+                if(random < 3) {
+                    return this.attackPower * 3;
                 } else {
                     return this.attackPower;
                 }  
-            },
-            "freeze": function() {
-                var random = Math.random() * 10;
-                if(random < 5) {
-                    return "freeze";
-                }
             }
         },
         {
             "name": "Iron-Man",
             "imgSrc": "assets/images/iron-man.png",
             "id": "5",
-            "healthPoints": 190,
+            "healthPoints": 390,
             "attackPower": 28,
+            "skill": "12+ per attack",
             "increasePower": 0,
             "finalAttackPower": function() {
                 if(this.increasePower === 1) {
-                    this.attackPower += 6;
+                    this.attackPower += 12;
                     return this.attackPower;
                 } else {
                     this.increasePower = 1;
@@ -103,21 +102,23 @@ $(document).ready(function() {
             "name": "Thanos",
             "imgSrc": "assets/images/thanos.png",
             "id": "6",
-            "healthPoints": 220,
-            "attackPower": 20,
+            "healthPoints": 450,
+            "attackPower": 50,
+            "skill": "30% 6x Critical",
             "finalAttackPower": function() {
                 var random = Math.random() * 10;
-                if(random < 2) {
-                    this.attackPower = 300;
-                    return this.attackPower;
+                if(random < 3) {
+                    return this.attackPower * 6;
                 } else {
-                    this.attackPower = 30
                     return this.attackPower;
                 }  
             }
         }
     ];
-    var availableHeroes = Array.from(superheroes);
+    var availableHeroes = [];
+    for(var i = 0; i < superheroes.length; i++) {
+        availableHeroes.push(Object.assign({}, superheroes[i]));
+    }
     var randomNumArr = [];
     var enemyHeroes = [];
     var enemyCharacter = {};
@@ -130,13 +131,71 @@ $(document).ready(function() {
     chooseCharactersh2.text("Choose Your Character");
     $("#attack").text("Attack");
 
+    function appendDiv(id, divToAppend){
+        var createDiv = $("<div>");
+        var createNameP = $("<p>");
+        var createHealthP = $("<p>");
+        var createAttackP = $("<p>");
+        var createSkillP = $("<p>");
+
+        createDiv.addClass("details-div");
+        createNameP.html('<span class="width-95">Hero-Name</span>');
+        createHealthP.html('<span class="width-95">Health-points</span>');
+        createAttackP.html('<span class="width-95">Attack-power</span>');
+        createSkillP.html('<span class="width-95">Passive-skill</span>');
+
+        createDiv.attr("id","character-details");
+        createNameP.attr("id","name");
+        createHealthP.attr("id","health");
+        createAttackP.attr("id","attack");
+        createSkillP.attr("id","skill");
+        
+        var character = availableHeroes.filter(x => x.id === id)[0];
+    
+        createNameP.append(`<span>:  ${character.name}</span>`);
+        createHealthP.append(`<span>:  ${character.healthPoints} pts</span>`);
+        createAttackP.append(`<span>:  ${character.attackPower} pts</span>`);
+        createSkillP.append(`<span>:  ${character.skill}</span>`);
+    
+        createDiv.append(createNameP)
+           .append(createHealthP)
+           .append(createAttackP)
+           .append(createSkillP); 
+
+        divToAppend.append(createDiv);
+    }
+    
+    
+    function heroesDetails() {
+        $(".availableHeroes").on("mouseenter",function() {
+            var SelectId = "#" + this.id;
+            appendDiv(this.id,$(SelectId));
+        });
+    
+        $(".availableHeroes").on("mouseleave",function() {
+            $("#character-details").remove();
+        });
+    }
+    
+    function enemydetails() {
+        $(".enemy-heroes").on("mouseenter",function() {
+            var SelectId = "#" + this.id;
+            appendDiv(this.id,$(SelectId));
+        });
+    
+        $(".enemy-heroes").on("mouseleave",function() {
+            $("#character-details").remove();
+        });
+    }
+
     function showCharacter(characters, classesToAdd, divToPrepend) {
         for(var i = characters.length-1 ; i >= 0; i--) {
             var createDiv = $("<div>");
             var createImg = $("<img>");
             var createNameP = $("<p>");
             var createHealthP = $("<p>");
-    
+            
+            createDiv.attr("id", characters[i].id);
             createNameP.text(characters[i].name);
             createNameP.addClass("p-padding");
             createImg.attr("src", characters[i].imgSrc);
@@ -153,6 +212,8 @@ $(document).ready(function() {
     
             divToPrepend.prepend(createDiv);
         }
+        heroesDetails();
+        enemydetails();
     }
 
     function character(characters, classesToAdd, divToPrepend, id) {
@@ -227,7 +288,7 @@ $(document).ready(function() {
                 enemyHeroes.splice(enemyHeroes.indexOf(enemyCharacter),1);
                 character(enemyCharacter, "character-div", currentDefenderDiv, "enemy-hero");
             $(".enemy-heroes").remove();
-            showCharacter(enemyHeroes, "character-div enemy-heroes", availableCharacterDiv);   
+            showCharacter(enemyHeroes, "character-div enemy-heroes", availableCharacterDiv);  
             }
             
         });
@@ -308,7 +369,7 @@ $(document).ready(function() {
                     enemyHeroes.splice(enemyHeroes.indexOf(enemyCharacter),1);
                     character(enemyCharacter, "character-div", currentDefenderDiv, "enemy-hero");
                 $(".enemy-heroes").remove();
-                showCharacter(enemyHeroes, "character-div enemy-heroes", availableCharacterDiv);   
+                showCharacter(enemyHeroes, "character-div enemy-heroes", availableCharacterDiv);  
                 }
             });
              
@@ -329,112 +390,10 @@ $(document).ready(function() {
         $("#attack").addClass("btn");
         $(".enemy-heroes").remove();
         $(".result-win").remove();
-        // availableHeroes = Array.from(superheroes);
-        availableHeroes = [
-            {
-                "name": "Captain-Marvel",
-                "imgSrc": "assets/images/captain-marvel.png",
-                "id": "1",
-                "healthPoints": 210,
-                "attackPower": 25,
-                "finalAttackPower": function() {
-                    var random = Math.random() * 10;
-                    if(random < 3) {
-                        return this.attackPower * 4;
-                    } else {
-                        return this.attackPower;
-                    }  
-                }
-            },
-            {
-                "name": "Thor",
-                "imgSrc": "assets/images/thor.png",
-                "id": "2",
-                "healthPoints": 250,
-                "attackPower": 28,
-                "finalAttackPower": function() {
-                    var random = Math.random() * 10;
-                    if(random < 2.5) {
-                        return this.attackPower * 2;
-                    } else {
-                        return this.attackPower;
-                    }  
-                }
-            },
-            {
-                "name": "Captain-America",
-                "imgSrc": "assets/images/captain-america.png",
-                "id": "3",
-                "healthPoints": 190,
-                "attackPower": 28,
-                "finalAttackPower": function() {
-                    var random = Math.random() * 10;
-                    if(random < 2) {
-                        return this.attackPower * 2;
-                    } else {
-                        return this.attackPower;
-                    }  
-                }
-            },
-            {
-                "name": "Doctor-Strange",
-                "imgSrc": "assets/images/doctor-strange.png",
-                "id": "4",
-                "healthPoints": 150,
-                "attackPower": 18,
-                "finalAttackPower": function() {
-                    var random = Math.random() * 10;
-                    if(random < 2) {
-                        return this.attackPower * 2;
-                    } else {
-                        return this.attackPower;
-                    }  
-                },
-                "freeze": function() {
-                    var random = Math.random() * 10;
-                    if(random < 5) {
-                        return "freeze";
-                    }
-                }
-            },
-            {
-                "name": "Iron-Man",
-                "imgSrc": "assets/images/iron-man.png",
-                "id": "5",
-                "healthPoints": 190,
-                "attackPower": 28,
-                "increasePower": 0,
-                "finalAttackPower": function() {
-                    if(this.increasePower === 1) {
-                        this.attackPower += 6;
-                        return this.attackPower;
-                    } else {
-                        this.increasePower = 1;
-                        return this.attackPower;
-                    }
-                    
-                    
-                    
-                }
-            },
-            {
-                "name": "Thanos",
-                "imgSrc": "assets/images/thanos.png",
-                "id": "6",
-                "healthPoints": 220,
-                "attackPower": 20,
-                "finalAttackPower": function() {
-                    var random = Math.random() * 10;
-                    if(random < 2) {
-                        this.attackPower = 300;
-                        return this.attackPower;
-                    } else {
-                        this.attackPower = 30
-                        return this.attackPower;
-                    }  
-                }
-            }
-        ];
+        availableHeroes = [];
+        for(var i = 0; i < superheroes.length; i++) {
+            availableHeroes.push(Object.assign({}, superheroes[i]));
+        }
         randomNumArr = [];
         enemyHeroes = [];
         enemyCharacter = {};
@@ -449,7 +408,6 @@ $(document).ready(function() {
         showCharacter(availableHeroes, "character-div availableHeroes", availableCharacterDiv);
         $(".availableHeroes").on("click",chooseHero);
         chooseCharactersh2.text("Choose Your Character");
-        console.log(availableHeroes);
     });
 
     
