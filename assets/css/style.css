@@ -8,6 +8,7 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    background-position-x: center;
 }
 
 .header {
@@ -239,10 +240,17 @@ hr {
 }
 
 .footer {
-    padding: 20px;
+    width: 100%;
+    padding: 20px 0;
     text-align: center;
     background-color: #053275;
     border-top: 3px solid #f4f4f4;
 }
 
-
+@media screen and (min-height: 1275px) {
+    .footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+}
