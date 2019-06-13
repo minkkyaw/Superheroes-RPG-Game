@@ -165,16 +165,26 @@ $(document).ready(function() {
         divToAppend.append(createDiv);
     }
     
-    
+    var mousedown = 0;
     function heroesDetails() {
         $(".availableHeroes").on("mouseenter",function() {
             var SelectId = "#" + this.id;
             appendDiv(this.id,$(SelectId));
         });
-    
-        $(".availableHeroes").on("mouseleave",function() {
-            $("#character-details").remove();
+        
+        $(".availableHeroes").on("mousedown",function() {
+            mousedown = 1;
         });
+
+        if(mousedown === 1) {
+            $(".availableHeroes").on("mouseup",function() {
+                $("#character-details").remove();
+            });
+        } else {
+            $(".availableHeroes").on("mouseleave",function() {
+                $("#character-details").remove();
+            });
+        }
     }
     
     function enemydetails() {
@@ -222,7 +232,7 @@ $(document).ready(function() {
             var createImg = $("<img>");
             var createNameP = $("<p>");
             var createHealthP = $("<p>");
-    
+
             createNameP.text(characters.name);
             createNameP.addClass("p-padding");
             createImg.attr("src", characters.imgSrc);
@@ -297,6 +307,7 @@ $(document).ready(function() {
     $(".availableHeroes").on("click",chooseHero);
 
     attackButton.click(function(e) {
+        console.log(enemyHeroPick, checkEnemyHealth);
         $(this).blur();
         if(attackCheck === 1 && result === 0 && enemyHeroPick === 1) {
             $("#enemy-hero").addClass("attack-background");
@@ -312,6 +323,7 @@ $(document).ready(function() {
             },300);
             
             if(enemyCharacter.healthPoints <= 0) {
+                enemyHeroPick = 0;
                 $("#enemy-hero").children("#health").text("0");
                 win(enemyCharacter, enemyHeroes);
                 $("#enemy-hero").remove();
@@ -325,8 +337,6 @@ $(document).ready(function() {
                     $("#attack").addClass("btn");
                 },2000);
             } else {
-                
-            
                 $("#enemy-hero").children("#health").text(enemyCharacter.healthPoints);
             }
             setTimeout(function() {  
@@ -365,12 +375,14 @@ $(document).ready(function() {
             $(".enemy-heroes").click(function(e) {
                 if(checkEnemyHealth === 1) {
                     checkEnemyHealth = 0;
+                    enemyHeroPick = 1;
                     enemyCharacter = enemyHeroes.filter(x => x.id === $(this).attr("data-id"))[0];
                     enemyHeroes.splice(enemyHeroes.indexOf(enemyCharacter),1);
                     character(enemyCharacter, "character-div", currentDefenderDiv, "enemy-hero");
-                $(".enemy-heroes").remove();
-                showCharacter(enemyHeroes, "character-div enemy-heroes", availableCharacterDiv);  
+                    $(".enemy-heroes").remove();
+                    showCharacter(enemyHeroes, "character-div enemy-heroes", availableCharacterDiv);  
                 }
+                
             });
              
         }
