@@ -165,27 +165,18 @@ $(document).ready(function() {
         divToAppend.append(createDiv);
     }
     
-    var mousedown = 0;
     function heroesDetails() {
-        $(".availableHeroes").on("mouseenter",function() {
+        $(".availableHeroes").on("mouseover",function() {
             var SelectId = "#" + this.id;
             appendDiv(this.id,$(SelectId));
         });
         
-        $(".availableHeroes").on("mousedown",function() {
-            mousedown = 1;
+        
+        $(".availableHeroes").on("mouseout",function() {
+            $("#character-details").remove();
         });
-
-        if(mousedown === 1) {
-            $(".availableHeroes").on("mouseup",function() {
-                $("#character-details").remove();
-            });
-        } else {
-            $(".availableHeroes").on("mouseleave",function() {
-                $("#character-details").remove();
-            });
-        }
     }
+    
     
     function enemydetails() {
         $(".enemy-heroes").on("mouseenter",function() {
